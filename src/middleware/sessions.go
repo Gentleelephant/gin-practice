@@ -9,7 +9,7 @@ import (
 
 func CheckSessions(c *gin.Context) {
 
-	if strings.HasPrefix(c.Request.URL.Path, "/login") && c.Request.Method == "POST" {
+	if strings.HasPrefix(c.Request.URL.Path, "/v2/login") && c.Request.Method == "POST" {
 		c.Next()
 		return
 	}

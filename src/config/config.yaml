@@ -4,3 +4,7 @@ mysql:
   user: root
   password: root
   database: gorm
+
+server:
+  host: localhost
+  port: 8080

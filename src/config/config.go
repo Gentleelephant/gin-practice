@@ -18,8 +18,14 @@ type MySQL struct {
 	Database string `yaml:"database"`
 }
 
+type Server struct {
+	Host string `yaml:"host"`
+	Port string `yaml:"port"`
+}
+
 type Config struct {
-	Mysql *MySQL
+	Mysql  *MySQL
+	Server *Server
 }
 
 // LoadConfig load config

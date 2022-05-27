@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"gin-practice/src/controller"
 	"gin-practice/src/middleware"
 	"github.com/gin-gonic/gin"
 )
@@ -14,3 +15,12 @@ func RegisterMiddlware(engine *gin.Engine) {
 }
 
 // 注册路由
+func RegisterRouter(engine *gin.Engine) {
+
+	v2 := engine.Group("/v2")
+	{
+		v2.POST("/login", controller.Login)
+		v2.GET("/hello", controller.Hello)
+	}
+
+}
