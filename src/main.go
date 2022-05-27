@@ -22,6 +22,11 @@ func main() {
 		log.Fatalln("load config error:", err)
 		return
 	}
-	engine.Run(loadConfig.Server.Host + ":" + loadConfig.Server.Port)
+
+	err = engine.Run(loadConfig.Server.Host + ":" + loadConfig.Server.Port)
+	if err != nil {
+		log.Fatalln("run server error:", err)
+		return
+	}
 
 }
