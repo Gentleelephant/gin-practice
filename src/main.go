@@ -1,8 +1,10 @@
 package main
 
 import (
+	"gin-practice/src/config"
 	"gin-practice/src/routers"
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 func main() {
@@ -15,6 +17,11 @@ func main() {
 	// 注册路由
 	routers.RegisterRouter(engine)
 
-	engine.Run(":8080")
+	loadConfig, err := config.LoadConfig("C:\\work\\code\\goPro\\gin-practice\\src\\config\\config.yaml")
+	if err != nil {
+		log.Fatalln("load config error:", err)
+		return
+	}
+	engine.Run(loadConfig.Server.Host + ":" + loadConfig.Server.Port)
 
 }
