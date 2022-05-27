@@ -2,6 +2,7 @@ package config
 
 import (
 	yaml "gopkg.in/yaml.v3"
+	"gorm.io/gorm"
 	"io/ioutil"
 	"log"
 )
@@ -29,6 +30,7 @@ type Server struct {
 type Config struct {
 	Mysql  *MySQL
 	Server *Server
+	DB     *gorm.DB
 }
 
 func InitConfig() {

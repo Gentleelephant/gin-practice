@@ -2,12 +2,13 @@ package dao
 
 import (
 	"gin-practice/src/config"
+	"gin-practice/src/entity"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
 )
 
-func InitDB() *gorm.DB {
+func InitDB() {
 
 	host := config.GolbalConfig.Mysql.Host
 	port := config.GolbalConfig.Mysql.Port
@@ -20,5 +21,9 @@ func InitDB() *gorm.DB {
 	if err != nil {
 		log.Fatal("init db error:", err)
 	}
-	return open
+	err = open.AutoMigrate(&entity.User{})
+	if err != nil {
+		log.Fatal("create table + "+"user"+"error:", err)
+	}
+	config.GolbalConfig.DB = open
 }

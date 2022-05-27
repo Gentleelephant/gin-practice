@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gin-practice/src/config"
 	"gin-practice/src/dao"
+	"gin-practice/src/entity"
 	"testing"
 )
 
@@ -20,7 +21,10 @@ func TestLoadConfig(t *testing.T) {
 func TestInitDB(t *testing.T) {
 
 	config.InitConfig()
-	db := dao.InitDB()
-	fmt.Print(db)
+	dao.InitDB()
+	db := config.GolbalConfig.DB
+	user := entity.User{}
+	db.Where(&entity.User{Username: "test3", Password: "test"}, "username", "password").Find(&user)
+	fmt.Print(user)
 
 }

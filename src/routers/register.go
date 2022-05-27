@@ -21,6 +21,7 @@ func RegisterRouter(engine *gin.Engine) {
 	{
 		v2.POST("/login", controller.Login)
 		v2.GET("/hello", controller.Hello)
+		v2.POST("/register", controller.Register)
 	}
 
 }

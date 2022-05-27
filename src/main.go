@@ -23,6 +23,9 @@ func main() {
 	// 注册路由
 	routers.RegisterRouter(engine)
 
-	engine.Run(config.GolbalConfig.Server.Host + ":" + config.GolbalConfig.Server.Port)
+	err := engine.Run(config.GolbalConfig.Server.Host + ":" + config.GolbalConfig.Server.Port)
+	if err != nil {
+		return
+	}
 
 }
