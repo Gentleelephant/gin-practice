@@ -17,6 +17,7 @@ func main() {
 	// 注册路由
 	routers.RegisterRouter(engine)
 
+	// 加载配置
 	loadConfig, err := config.LoadConfig("C:\\work\\code\\goPro\\gin-practice\\src\\config\\config.yaml")
 	if err != nil {
 		log.Fatalln("load config error:", err)

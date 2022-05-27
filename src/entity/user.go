@@ -17,9 +17,3 @@ type User struct {
 
 	DeletedAt int64 `json:"deleted_at"`
 }
-
-type LoginUser struct {
-	Username string `json:"username" form:"username" binding:"required"`
-
-	Password string `json:"password" form:"password" binding:"required"`
-}

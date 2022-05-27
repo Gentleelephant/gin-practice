@@ -7,11 +7,11 @@ import (
 	"net/http"
 )
 
-func Login(c *gin.Context) {
+// 注册用户
+func Register(c *gin.Context) {
 
-	loginUser := &model.LoginUser{}
-
-	err := c.Bind(loginUser)
+	dto := &model.UserDTO{}
+	err := c.BindJSON(dto)
 	if err != nil {
 		c.JSON(http.StatusOK, entity.CustomResp{
 			Code: 4001,
@@ -21,13 +21,5 @@ func Login(c *gin.Context) {
 		c.Abort()
 		return
 	}
-
-	c.SetCookie("token", "token", 120, "/", c.GetHeader("Host"), false, true)
-
-	c.JSON(http.StatusOK, entity.CustomResp{
-		Code: 2000,
-		Msg:  "登录成功",
-		Data: loginUser,
-	})
 
 }
