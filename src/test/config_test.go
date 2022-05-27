@@ -3,6 +3,7 @@ package test
 import (
 	"fmt"
 	"gin-practice/src/config"
+	"gin-practice/src/dao"
 	"testing"
 )
 
@@ -13,5 +14,13 @@ func TestLoadConfig(t *testing.T) {
 		t.Fatal(err)
 	}
 	fmt.Print(*loadConfig)
+
+}
+
+func TestInitDB(t *testing.T) {
+
+	config.InitConfig()
+	db := dao.InitDB()
+	fmt.Print(db)
 
 }

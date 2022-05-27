@@ -11,7 +11,7 @@ func Login(c *gin.Context) {
 
 	loginUser := &model.LoginUser{}
 
-	err := c.Bind(loginUser)
+	err := c.BindJSON(loginUser)
 	if err != nil {
 		c.JSON(http.StatusOK, entity.CustomResp{
 			Code: 4001,

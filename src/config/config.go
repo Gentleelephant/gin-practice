@@ -3,7 +3,11 @@ package config
 import (
 	yaml "gopkg.in/yaml.v3"
 	"io/ioutil"
+	"log"
 )
+
+var GolbalConfig = &Config{}
+var ConfigPath = "C:\\work\\code\\goPro\\gin-practice\\src\\config\\config.yaml"
 
 type MySQL struct {
 	Host string `yaml:"host"`
@@ -25,6 +29,14 @@ type Server struct {
 type Config struct {
 	Mysql  *MySQL
 	Server *Server
+}
+
+func InitConfig() {
+	config, err := LoadConfig(ConfigPath)
+	if err != nil {
+		log.Fatal("init config error:", err)
+	}
+	GolbalConfig = config
 }
 
 // LoadConfig load config
