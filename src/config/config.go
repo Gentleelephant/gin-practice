@@ -22,6 +22,17 @@ type MySQL struct {
 	Database string `yaml:"database"`
 }
 
+type LDAP struct {
+	Enabled         bool   `yaml:"enabled"`
+	Host            string `yaml:"url"`
+	Port            string `yaml:"port"`
+	ManagerDN       string `yaml:"managerDN"`
+	ManagerPassword string `yaml:"managerPassword"`
+	UserSearchBase  string `yaml:"userSearchBase"`
+	LoginAttribute  string `yaml:"loginAttribute"`
+	MailAttribute   string `yaml:"mailAttribute"`
+}
+
 type Server struct {
 	Host string `yaml:"host"`
 	Port string `yaml:"port"`
@@ -31,12 +42,13 @@ type Config struct {
 	Mysql  *MySQL
 	Server *Server
 	DB     *gorm.DB
+	LDAP   *LDAP
 }
 
 func InitConfig() {
 	config, err := LoadConfig(ConfigPath)
 	if err != nil {
-		log.Fatal("init config error:", err)
+		log.Println("init config error:", err)
 	}
 	GolbalConfig = config
 }

@@ -26,7 +26,7 @@ func Register(c *gin.Context) {
 
 	db := config.GolbalConfig.DB
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	db.Model(&entity.User{}).Create(model.UserDTOToUser(dto))
 	c.JSON(http.StatusOK, entity.CustomResp{

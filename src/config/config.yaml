@@ -8,3 +8,13 @@ mysql:
 server:
   host: 127.0.0.1
   port: 8080
+
+ldap:
+  enabled: true
+  url: localhost
+  port: 10389
+  managerDN: uid=admin,ou=system
+  managerPassword: secret
+  userSearchBase: dc=example,dc=com
+  loginAttribute: uid
+  mailAttribute: mail

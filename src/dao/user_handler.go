@@ -19,11 +19,11 @@ func InitDB() {
 	dsn := user + ":" + password + "@tcp(" + host + ":" + port + ")/" + database + "?charset=utf8&parseTime=True&loc=Local"
 	open, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("init db error:", err)
+		log.Println("init db error:", err)
 	}
 	err = open.AutoMigrate(&entity.User{})
 	if err != nil {
-		log.Fatal("create table + "+"user"+"error:", err)
+		log.Println("create table + "+"user"+"error:", err)
 	}
 	config.GolbalConfig.DB = open
 }

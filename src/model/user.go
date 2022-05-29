@@ -15,9 +15,9 @@ type UserDTO struct {
 }
 
 type LoginUser struct {
-	Username string `json:"username" form:"username" binding:"required,min=6,max=20"`
+	Username string `json:"username" form:"username" binding:"required"`
 
-	Password string `json:"password" form:"password" binding:"required,min=6,max=10"`
+	Password string `json:"password" form:"password" binding:"required"`
 }
 
 // UserVO TODO
