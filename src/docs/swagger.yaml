@@ -1,0 +1,19 @@
+info:
+  contact: {}
+paths:
+  /v2/hello:
+    get:
+      consumes:
+      - application/json
+      description: do ping
+      produces:
+      - application/json
+      responses:
+        "2000":
+          description: ""
+          schema:
+            type: string
+      summary: ping example
+      tags:
+      - example
+swagger: "2.0"
