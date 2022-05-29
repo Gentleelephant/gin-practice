@@ -6,6 +6,17 @@ import (
 	"net/http"
 )
 
+// @BasePath /api/v1
+
+// Hello PingExample godoc
+// @Summary ping example
+// @Schemes
+// @Description do ping
+// @Tags example
+// @Accept json
+// @Produce json
+// @Success 2000 {string} hello world
+// @Router /v2/hello [get]
 func Hello(c *gin.Context) {
 
 	c.JSON(http.StatusOK, entity.CustomResp{

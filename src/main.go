@@ -5,6 +5,8 @@ import (
 	"gin-practice/src/dao"
 	"gin-practice/src/routers"
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
@@ -22,6 +24,8 @@ func main() {
 
 	// 注册路由
 	routers.RegisterRouter(engine)
+
+	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	err := engine.Run(config.GolbalConfig.Server.Host + ":" + config.GolbalConfig.Server.Port)
 	if err != nil {

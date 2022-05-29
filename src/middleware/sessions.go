@@ -14,6 +14,11 @@ func CheckSessions(c *gin.Context) {
 		return
 	}
 
+	if strings.HasPrefix(c.Request.URL.Path, "/swagger") && c.Request.Method == "GET" {
+		c.Next()
+		return
+	}
+
 	if strings.HasPrefix(c.Request.URL.Path, "/v2/register") && c.Request.Method == "POST" {
 		c.Next()
 		return

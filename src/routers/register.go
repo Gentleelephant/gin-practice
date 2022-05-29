@@ -2,6 +2,7 @@ package routers
 
 import (
 	"gin-practice/src/controller"
+	docs "gin-practice/src/docs"
 	"gin-practice/src/middleware"
 	"github.com/gin-gonic/gin"
 )
@@ -17,6 +18,7 @@ func RegisterMiddlware(engine *gin.Engine) {
 // 注册路由
 func RegisterRouter(engine *gin.Engine) {
 
+	docs.SwaggerInfo.BasePath = "/v2"
 	v2 := engine.Group("/v2")
 	{
 		v2.POST("/login", controller.Login)
