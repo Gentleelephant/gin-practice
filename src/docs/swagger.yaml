@@ -1,7 +1,7 @@
 info:
   contact: {}
 paths:
-  /v2/hello:
+  /hello:
     get:
       consumes:
       - application/json

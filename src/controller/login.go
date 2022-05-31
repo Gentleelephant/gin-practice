@@ -14,9 +14,6 @@ import (
 
 func Login(c *gin.Context) {
 
-	var code = 2000
-	var msg = "success"
-
 	loginUser := &model.LoginUser{}
 
 	err := c.BindJSON(loginUser)
@@ -35,22 +32,19 @@ func Login(c *gin.Context) {
 	if ldapConfig.Enabled {
 
 		//dial, err1 := ldap.Dial("tcp", fmt.Sprintf("%s:%s", ldapConfig.Host, ldapConfig.Port))
-		dial, err1 := ldap.DialURL("ldap://localhost:10389")
+		dial, err1 := ldap.DialURL(fmt.Sprintf("ldap://%s:%s", ldapConfig.Host, ldapConfig.Port))
 		if err1 != nil {
-			log.Println("连接LDAP服务器失败:", err)
-			code = 4004
-			msg = "连接LDAP服务器失败"
+			log.Println("连接LDAP服务器失败:", err1)
 		}
 		defer dial.Close()
 
 		// Reconnect with TLS
 		// 建立 StartTLS 连接,这是建立纯文本上的 TLS 协议,允许您将非加密的通讯升级为 TLS 加密而不需要另外使用一个新的端口.
 		// 邮件的 POP3 ,IMAP 也有支持类似的 StartTLS,这些都是有 RFC 的
+
 		err1 = dial.StartTLS(&tls.Config{InsecureSkipVerify: true})
 		if err1 != nil {
 			log.Println(err1)
-			code = 4005
-			msg = "建立 StartTLS 连接失败"
 		}
 
 		// First bind with a read only user
@@ -62,7 +56,7 @@ func Login(c *gin.Context) {
 			log.Println("Bind OK")
 		}
 
-		filter := fmt.Sprintf("(&(objectClass=organizationalPerson)(|(%s=%s)(%s=%s)))", ldapConfig.LoginAttribute, loginUser.Username, ldapConfig.MailAttribute, loginUser.Username)
+		filter := fmt.Sprintf("(&(objectClass=organizationalPerson)(%s=%s))", ldapConfig.LoginAttribute, loginUser.Username)
 		log.Println("filter: ", filter)
 
 		sql := ldap.NewSearchRequest(
@@ -76,13 +70,13 @@ func Login(c *gin.Context) {
 			//fmt.Sprintf("(&(objectClass=organizationalPerson)(uid=%s))", "zhang"),
 			filter,
 			// 这里是查询返回的属性,以数组形式提供.如果为空则会返回所有的属性
-			[]string{"dn"},
+			[]string{},
 			nil,
 		)
 
 		sr, err1 := dial.Search(sql)
 		if err1 != nil {
-			log.Println("查询失败:", err)
+			log.Println("查询失败:", err1)
 		}
 
 		if len(sr.Entries) != 1 {
@@ -109,13 +103,6 @@ func Login(c *gin.Context) {
 			})
 			return
 		}
-		code = 2000
-		msg = "登录成功"
-		c.JSON(http.StatusOK, entity.CustomResp{
-			Code: code,
-			Msg:  msg,
-			Data: "",
-		})
 
 	} else {
 

@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 2000 {string} hello world
-// @Router /v2/hello [get]
+// @Router /hello [get]
 func Hello(c *gin.Context) {
 
 	c.JSON(http.StatusOK, entity.CustomResp{

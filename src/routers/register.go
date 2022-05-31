@@ -2,7 +2,7 @@ package routers
 
 import (
 	"gin-practice/src/controller"
-	docs "gin-practice/src/docs"
+	"gin-practice/src/docs"
 	"gin-practice/src/middleware"
 	"github.com/gin-gonic/gin"
 )
