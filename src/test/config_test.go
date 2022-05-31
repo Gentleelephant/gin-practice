@@ -14,17 +14,16 @@ import (
 
 func TestLoadConfig(t *testing.T) {
 
-	loadConfig, err := config.LoadConfig("C:\\work\\code\\goPro\\gin-practice\\src\\config\\config.yaml")
+	err := config.LoadConfig("C:\\work\\code\\goPro\\gin-practice\\src\\config\\config.yaml")
 	if err != nil {
 		t.Error(err)
 	}
-	fmt.Print(loadConfig)
+	fmt.Print(config.GolbalConfig)
 
 }
 
 func TestInitDB(t *testing.T) {
 
-	config.InitConfig()
 	dao.InitDB()
 	db := config.GolbalConfig.DB
 	user := entity.User{}
@@ -40,7 +39,6 @@ func TestLDAP(t *testing.T) {
 		Password: "test",
 	}
 
-	config.InitConfig()
 	dao.InitDB()
 	ldapConfig := config.GolbalConfig.LDAP
 	dial, err1 := ldap.Dial("tcp", fmt.Sprintf("%s:%s", ldapConfig.Host, ldapConfig.Port))
@@ -101,7 +99,7 @@ func TestLDAP(t *testing.T) {
 func TestADDUser(t *testing.T) {
 
 	// 初始化
-	config.InitConfig()
+
 	dao.InitDB()
 
 	user := &entity.User{
