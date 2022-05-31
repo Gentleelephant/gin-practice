@@ -4,21 +4,16 @@ import (
 	yaml "gopkg.in/yaml.v3"
 	"gorm.io/gorm"
 	"io/ioutil"
-	"log"
 )
 
 var GolbalConfig = &Config{}
 var ConfigPath = "C:\\work\\code\\goPro\\gin-practice\\src\\config\\config.yaml"
 
 type MySQL struct {
-	Host string `yaml:"host"`
-
-	Port string `yaml:"port"`
-
-	User string `yaml:"user"`
-
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	User     string `yaml:"user"`
 	Password string `yaml:"password"`
-
 	Database string `yaml:"database"`
 }
 
@@ -39,34 +34,22 @@ type Server struct {
 }
 
 type Config struct {
-	Mysql  *MySQL
-	Server *Server
+	Mysql  *MySQL  `yaml:"mysql"`
+	Server *Server `yaml:"server"`
 	DB     *gorm.DB
-	LDAP   *LDAP
-}
-
-func InitConfig() {
-	config, err := LoadConfig(ConfigPath)
-	if err != nil {
-		log.Println("init config error:", err)
-	}
-	GolbalConfig = config
+	LDAP   *LDAP `yaml:"ldap"`
 }
 
 // LoadConfig load config
-func LoadConfig(path string) (*Config, error) {
+func LoadConfig(path string) error {
 
 	buf, err := ioutil.ReadFile(path)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	var conf Config
-	err = yaml.Unmarshal(buf, &conf)
-
+	err = yaml.Unmarshal(buf, GolbalConfig)
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	return &conf, nil
-
+	return nil
 }

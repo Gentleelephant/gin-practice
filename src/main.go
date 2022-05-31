@@ -13,8 +13,8 @@ func main() {
 
 	engine := gin.Default()
 
-	// 初始化配置
-	config.InitConfig()
+	//// 初始化配置
+	//config.InitConfig()
 
 	// 初始化数据库
 	dao.InitDB()
