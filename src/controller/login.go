@@ -14,6 +14,9 @@ import (
 
 func Login(c *gin.Context) {
 
+	db := config.GolbalConfig.DB
+	dbUser := &entity.User{}
+
 	loginUser := &model.LoginUser{}
 
 	err := c.BindJSON(loginUser)
@@ -104,10 +107,32 @@ func Login(c *gin.Context) {
 			return
 		}
 
+		//dbUser.Username = loginUser.Username
+		//dbUser.Email = sr.Entries[0].GetAttributeValue("mail")
+
+		log.Println("dbUser", dbUser)
+
+		result := &entity.User{}
+
+		db.Where(&entity.User{Username: loginUser.Username}, "username").First(result)
+		if result.Username == "" {
+
+			result.Username = loginUser.Username
+			result.Password = loginUser.Password
+			result.Email = sr.Entries[0].GetAttributeValue("mail")
+
+			db.Create(result)
+			c.JSON(http.StatusOK, entity.CustomResp{
+				Code: 4002,
+				Msg:  "用户不存在,重新创建用户",
+				Data: result,
+			})
+			c.Abort()
+			return
+		}
+
 	} else {
 
-		db := config.GolbalConfig.DB
-		dbUser := &entity.User{}
 		db.Where(&entity.User{Username: loginUser.Username}, "username").Find(&dbUser)
 		if dbUser.Username == "" {
 			c.JSON(http.StatusOK, entity.CustomResp{
@@ -133,7 +158,7 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, entity.CustomResp{
 		Code: 2000,
 		Msg:  "登录成功",
-		Data: "",
+		Data: dbUser,
 	})
 	c.SetCookie("token", "token", 120, "/", c.GetHeader("Host"), false, true)
 

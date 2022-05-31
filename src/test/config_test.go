@@ -97,3 +97,22 @@ func TestLDAP(t *testing.T) {
 	err1 = dial.Bind(userdn, user.Password)
 
 }
+
+func TestADDUser(t *testing.T) {
+
+	// 初始化
+	config.InitConfig()
+	dao.InitDB()
+
+	user := &entity.User{
+		Username: "test",
+		Password: "test",
+		Email:    "1665400978@qq.com",
+		Phone:    "18888888888",
+	}
+	t.Log(user)
+
+	golbalConfig := config.GolbalConfig
+	golbalConfig.DB.Create(user)
+
+}
