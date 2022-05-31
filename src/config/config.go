@@ -1,13 +1,17 @@
 package config
 
 import (
+	"gin-practice/src/dao"
 	yaml "gopkg.in/yaml.v3"
 	"gorm.io/gorm"
 	"io/ioutil"
 )
 
-var GolbalConfig = &Config{}
-var ConfigPath = "C:\\work\\code\\goPro\\gin-practice\\src\\config\\config.yaml"
+var (
+	DB           *gorm.DB
+	GolbalConfig = &Config{}
+	ConfigPath   = "C:\\work\\code\\goPro\\gin-practice\\src\\config\\config.yaml"
+)
 
 type MySQL struct {
 	Host     string `yaml:"host"`
@@ -36,8 +40,7 @@ type Server struct {
 type Config struct {
 	Mysql  *MySQL  `yaml:"mysql"`
 	Server *Server `yaml:"server"`
-	DB     *gorm.DB
-	LDAP   *LDAP `yaml:"ldap"`
+	LDAP   *LDAP   `yaml:"ldap"`
 }
 
 // LoadConfig load config
@@ -51,5 +54,9 @@ func LoadConfig(path string) error {
 	if err != nil {
 		return err
 	}
+
+	// TODO 初始化gorm
+	dao.InitDB()
+
 	return nil
 }

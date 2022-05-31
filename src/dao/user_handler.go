@@ -25,5 +25,5 @@ func InitDB() {
 	if err != nil {
 		log.Println("create table + "+"user"+"error:", err)
 	}
-	config.GolbalConfig.DB = open
+	config.DB = open
 }

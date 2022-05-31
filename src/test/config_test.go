@@ -25,7 +25,7 @@ func TestLoadConfig(t *testing.T) {
 func TestInitDB(t *testing.T) {
 
 	dao.InitDB()
-	db := config.GolbalConfig.DB
+	db := config.DB
 	user := entity.User{}
 	db.Where(&entity.User{Username: "test3", Password: "test"}, "username", "password").Find(&user)
 	fmt.Print(user)
@@ -110,7 +110,7 @@ func TestADDUser(t *testing.T) {
 	}
 	t.Log(user)
 
-	golbalConfig := config.GolbalConfig
-	golbalConfig.DB.Create(user)
+	db := config.DB
+	db.Create(user)
 
 }
