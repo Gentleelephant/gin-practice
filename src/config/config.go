@@ -28,6 +28,7 @@ type LdapConf struct {
 	ManagerDN            string `yaml:"managerDN"`
 	ManagerPassword      string `yaml:"managerPassword"`
 	UserSearchBase       string `yaml:"userSearchBase"`
+	UserSearchFilter     string `yaml:"userSearchFilter"`
 	GroupSearchBase      string `yaml:"groupSearchBase"`
 	GroupSearchFilter    string `yaml:"groupSearchFilter"`
 	UserMemberAttribute  string `yaml:"userMemberAttribute"`

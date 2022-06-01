@@ -17,3 +17,4 @@ ldap:
   userSearchBase: dc=example,dc=com
   loginAttribute: uid
   mailAttribute: mail
+  insecureSkipVerify: true

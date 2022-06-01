@@ -14,7 +14,7 @@ func Login(c *gin.Context) {
 	log.Println(user)
 	if err != nil {
 		c.JSON(200, gin.H{
-			"code":    -1,
+			"code":    4001,
 			"message": "参数错误",
 		})
 		return
@@ -22,20 +22,23 @@ func Login(c *gin.Context) {
 	// 判断是否启用LDAP登陆
 	if config.GlobalConfig.LDAP.Enabled {
 		provider := auth.GetProvider()
-		check := provider.Authentication(user.Username, user.Password)
+		authentication, err := provider.Authentication(user.Username, user.Password)
+		check := authentication
 		if !check {
 			c.JSON(200, gin.H{
 				"code":    -1,
-				"message": "用户名或密码错误",
+				"message": err.Error(),
 			})
 			return
 		} else {
 			c.SetCookie("token", user.Username, 3600, "/", "", false, false)
 			c.JSON(200, gin.H{
-				"code":    0,
+				"code":    2000,
 				"message": "登陆成功",
 			})
 			return
 		}
 	}
+	// 启用数据库登陆
+
 }
