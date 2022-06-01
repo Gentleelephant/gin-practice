@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"gin-practice/src/config"
 	"gin-practice/src/dao"
 	"gin-practice/src/routers"
@@ -26,8 +25,6 @@ func main() {
 	}
 
 	dao.InitDB()
-
-	fmt.Println("config", config.ConfigPath)
 
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
