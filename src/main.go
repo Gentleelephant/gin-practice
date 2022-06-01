@@ -25,10 +25,9 @@ func main() {
 		return
 	}
 
-	fmt.Println("config", config.GlobalConfig)
+	dao.InitDB()
 
-	db := dao.InitDB()
-	config.DB = db
+	fmt.Println("config", config.ConfigPath)
 
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 

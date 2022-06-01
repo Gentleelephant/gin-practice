@@ -1,32 +1,33 @@
 package test
 
-import (
-	"fmt"
-	"gin-practice/src/config"
-	"gin-practice/src/dao"
-	"gin-practice/src/entity"
-	"testing"
-)
-
-func TestLoadConfig(t *testing.T) {
-
-	err := config.LoadConfig("C:\\work\\code\\goPro\\gin-practice\\src\\config\\config.yaml")
-	if err != nil {
-		t.Error(err)
-	}
-	fmt.Print(config.GlobalConfig)
-
-}
-
-func TestInitDB(t *testing.T) {
-
-	dao.InitDB()
-	db := config.DB
-	user := entity.User{}
-	db.Where(&entity.User{Username: "test3", Password: "test"}, "username", "password").Find(&user)
-	fmt.Print(user)
-
-}
+//
+//import (
+//	"fmt"
+//	"gin-practice/src/config"
+//	"gin-practice/src/dao"
+//	"gin-practice/src/entity"
+//	"testing"
+//)
+//
+//func TestLoadConfig(t *testing.T) {
+//
+//	err := config.LoadConfig("C:\\work\\code\\goPro\\gin-practice\\src\\config\\config.yaml")
+//	if err != nil {
+//		t.Error(err)
+//	}
+//	fmt.Print(config.GlobalConfig)
+//
+//}
+//
+//func TestInitDB(t *testing.T) {
+//
+//	dao.InitDB()
+//	db := config.DB
+//	user := entity.User{}
+//	db.Where(&entity.User{Username: "test3", Password: "test"}, "username", "password").Find(&user)
+//	fmt.Print(user)
+//
+//}
 
 //func TestLDAP(t *testing.T) {
 //
@@ -92,21 +93,21 @@ func TestInitDB(t *testing.T) {
 //
 //}
 
-func TestADDUser(t *testing.T) {
-
-	// 初始化
-
-	dao.InitDB()
-
-	user := &entity.User{
-		Username: "test",
-		Password: "test",
-		Email:    "1665400978@qq.com",
-		Phone:    "18888888888",
-	}
-	t.Log(user)
-
-	db := config.DB
-	db.Create(user)
-
-}
+//func TestADDUser(t *testing.T) {
+//
+//	// 初始化
+//
+//	dao.InitDB()
+//
+//	user := &entity.User{
+//		Username: "test",
+//		Password: "test",
+//		Email:    "1665400978@qq.com",
+//		Phone:    "18888888888",
+//	}
+//	t.Log(user)
+//
+//	db := config.DB
+//	db.Create(user)
+//
+//}
