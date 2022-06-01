@@ -11,8 +11,7 @@ server:
 
 ldap:
   enabled: true
-  url: localhost
-  port: 10389
+  url: ldap://localhost:10389
   managerDN: uid=admin,ou=system
   managerPassword: secret
   userSearchBase: dc=example,dc=com

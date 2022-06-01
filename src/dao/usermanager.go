@@ -5,8 +5,6 @@ import (
 	"gin-practice/src/entity"
 )
 
-var db = config.GolbalConfig.DB
-
 func AddUser(user *entity.User) error {
-	return db.Create(user).Error
+	return config.DB.Create(user).Error
 }

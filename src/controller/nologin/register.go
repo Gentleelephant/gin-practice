@@ -1,4 +1,4 @@
-package controller
+package nologin
 
 import (
 	"gin-practice/src/config"
@@ -24,7 +24,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	db := config.GolbalConfig.DB
+	db := config.DB
 	if err != nil {
 		log.Println(err)
 	}

@@ -1,4 +1,4 @@
-package controller
+package needlogin
 
 import (
 	"gin-practice/src/entity"

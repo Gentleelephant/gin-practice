@@ -1,7 +1,8 @@
 package routers
 
 import (
-	"gin-practice/src/controller"
+	"gin-practice/src/controller/needlogin"
+	"gin-practice/src/controller/nologin"
 	"gin-practice/src/docs"
 	"gin-practice/src/middleware"
 	"github.com/gin-gonic/gin"
@@ -21,9 +22,9 @@ func RegisterRouter(engine *gin.Engine) {
 	docs.SwaggerInfo.BasePath = "/v2"
 	v2 := engine.Group("/v2")
 	{
-		v2.POST("/login", controller.Login)
-		v2.GET("/hello", controller.Hello)
-		v2.POST("/register", controller.Register)
+		v2.POST("/login", nologin.Login)
+		v2.GET("/hello", needlogin.Hello)
+		v2.POST("/register", nologin.Register)
 	}
 
 }

@@ -1,4 +1,4 @@
-package controller
+package nologin
 
 import (
 	"crypto/tls"
@@ -14,9 +14,8 @@ import (
 
 func Login(c *gin.Context) {
 
-	db := config.GolbalConfig.DB
+	db := config.DB
 	dbUser := &entity.User{}
-
 	loginUser := &model.LoginUser{}
 
 	err := c.BindJSON(loginUser)
@@ -30,14 +29,16 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	ldapConfig := config.GolbalConfig.LDAP
+	ldapConfig := config.GlobalConfig.LDAP
 
 	if ldapConfig.Enabled {
 
-		//dial, err1 := ldap.Dial("tcp", fmt.Sprintf("%s:%s", ldapConfig.Host, ldapConfig.Port))
-		dial, err1 := ldap.DialURL(fmt.Sprintf("ldap://%s:%s", ldapConfig.Host, ldapConfig.Port))
-		if err1 != nil {
-			log.Println("连接LDAP服务器失败:", err1)
+		//dial, err1 := auth.Dial("tcp", fmt.Sprintf("%s:%s", ldapConfig.Host, ldapConfig.Port))
+		//dial, err1 := auth.DialURL(fmt.Sprintf("auth://%s:%s", ldapConfig.Host, ldapConfig.Port))
+		l := config.GlobalConfig.LDAP
+		dial, err := l.NewConn()
+		if err != nil {
+			log.Println("连接LDAP服务器失败:", err)
 		}
 		defer dial.Close()
 
@@ -45,15 +46,15 @@ func Login(c *gin.Context) {
 		// 建立 StartTLS 连接,这是建立纯文本上的 TLS 协议,允许您将非加密的通讯升级为 TLS 加密而不需要另外使用一个新的端口.
 		// 邮件的 POP3 ,IMAP 也有支持类似的 StartTLS,这些都是有 RFC 的
 
-		err1 = dial.StartTLS(&tls.Config{InsecureSkipVerify: true})
-		if err1 != nil {
-			log.Println(err1)
+		err = dial.StartTLS(&tls.Config{InsecureSkipVerify: true})
+		if err != nil {
+			log.Println(err)
 		}
 
 		// First bind with a read only user
 		// 先用我们的 bind 账号给 bind 上去
-		err1 = dial.Bind(ldapConfig.ManagerDN, ldapConfig.ManagerPassword)
-		if err1 != nil {
+		err = dial.Bind(ldapConfig.ManagerDN, ldapConfig.ManagerPassword)
+		if err != nil {
 			log.Println("Bind err: ", err)
 		} else {
 			log.Println("Bind OK")
