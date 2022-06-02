@@ -24,7 +24,7 @@ func main() {
 		return
 	}
 
-	dao.InitDB()
+	config.DB = dao.InitDB()
 
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 

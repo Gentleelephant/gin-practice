@@ -80,17 +80,17 @@ func (l *LdapPrivider) newConn() (*ldap.Conn, error) {
 	return ldap.DialURL("tcp", ldap.DialWithTLSConfig(&tlsConfig))
 }
 
-func (l *LdapPrivider) Authentication(username, password string) (bool, error) {
+func (l *LdapPrivider) Authentication(username, password string) (bool, string, error) {
 	conn, err := l.newConn()
 	if err != nil {
 		log.Println("Failed to connect to LDAP server", err)
-		return false, err
+		return false, "", err
 	}
 	defer conn.Close()
 	// Bind
 	if err := conn.Bind(l.ManagerDN, l.ManagerPassword); err != nil {
 		log.Println("Failed to bind to LDAP server", err)
-		return false, err
+		return false, "", err
 	}
 	// Search for user
 	filter := fmt.Sprintf("(&(objectClass=organizationalPerson)(%s=%s))", l.LoginAttribute, username)
@@ -114,7 +114,7 @@ func (l *LdapPrivider) Authentication(username, password string) (bool, error) {
 	sr, err := conn.Search(sql)
 	if err != nil {
 		log.Println("Query failed:", err)
-		return false, err
+		return false, "", err
 	}
 
 	dn := sr.Entries[0].DN
@@ -123,7 +123,7 @@ func (l *LdapPrivider) Authentication(username, password string) (bool, error) {
 	err = conn.Bind(dn, password)
 	if err != nil {
 		log.Println("password error:", err)
-		return false, err
+		return false, "", err
 	}
-	return true, nil
+	return true, dn, nil
 }

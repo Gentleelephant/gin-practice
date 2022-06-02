@@ -3,6 +3,8 @@ package nologin
 import (
 	"gin-practice/src/auth"
 	"gin-practice/src/config"
+	"gin-practice/src/dao"
+	"gin-practice/src/entity"
 	"gin-practice/src/model"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -22,12 +24,12 @@ func Login(c *gin.Context) {
 	// 判断是否启用LDAP登陆
 	if config.GlobalConfig.LDAP.Enabled {
 		provider := auth.GetProvider()
-		authentication, err := provider.Authentication(user.Username, user.Password)
+		authentication, dn, err := provider.Authentication(user.Username, user.Password)
 		check := authentication
 		if !check {
 			c.JSON(200, gin.H{
 				"code":    -1,
-				"message": err.Error(),
+				"message": err,
 			})
 			return
 		} else {
@@ -36,6 +38,25 @@ func Login(c *gin.Context) {
 				"code":    2000,
 				"message": "登陆成功",
 			})
+			// 判断用户是否存在，不存在则创建
+			// 判断表中是否以及包含该用户
+			user := &entity.User{
+				Username: user.Username,
+			}
+
+			take := dao.CheckUser(user)
+			if take != 1 {
+				log.Println("user not exist, insert user......")
+				// 插入用户
+				err := dao.AddUserAndUserDn(user, &entity.UserDn{
+					Username: user.Username,
+					Dn:       dn,
+				})
+				if err != nil {
+					return
+				}
+				return
+			}
 			return
 		}
 	}
