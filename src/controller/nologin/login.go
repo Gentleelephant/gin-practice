@@ -3,8 +3,6 @@ package nologin
 import (
 	"gin-practice/src/auth"
 	"gin-practice/src/config"
-	"gin-practice/src/dao"
-	"gin-practice/src/entity"
 	"gin-practice/src/model"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -21,44 +19,30 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
+	// 创建连接池，本来连接吃因嘎嘎i是个公用属性
+	pool, err := auth.NewPool(config.GlobalConfig.LDAP.NewLdapClient, 10)
+	if err != nil {
+		return
+	}
 	// 判断是否启用LDAP登陆
 	if config.GlobalConfig.LDAP.Enabled {
-		provider := auth.GetProvider()
-		authentication, dn, err := provider.Authentication(user.Username, user.Password)
-		check := authentication
-		if !check {
-			c.JSON(200, gin.H{
-				"code":    -1,
-				"message": err,
-			})
-			return
-		} else {
-			c.SetCookie("token", user.Username, 3600, "/", "", false, false)
-			c.JSON(200, gin.H{
-				"code":    2000,
-				"message": "登陆成功",
-			})
-			// 判断用户是否存在，不存在则创建
-			// 判断表中是否以及包含该用户
-			user := &entity.User{
-				Username: user.Username,
-			}
-
-			take := dao.CheckUser(user)
-			if take != 1 {
-				log.Println("user not exist, insert user......")
-				// 插入用户
-				err := dao.AddUserAndUserDn(user, &entity.UserDn{
-					Username: user.Username,
-					Dn:       dn,
-				})
-				if err != nil {
-					return
-				}
-				return
-			}
+		checkUser := auth.CheckUser{
+			pool,
+			config.GlobalConfig.LDAP.ManagerDN,
+			config.GlobalConfig.LDAP.ManagerPassword,
+			config.GlobalConfig.LDAP.UserSearchBase,
+			config.GlobalConfig.LDAP.LoginAttribute,
+			config.GlobalConfig.LDAP.MailAttribute,
+		}
+		authentication, err := checkUser.Authentication(user.Username, user.Password)
+		if err != nil {
 			return
 		}
+		c.JSON(200, gin.H{
+			"code":    0,
+			"message": "登陆成功",
+			"data":    authentication,
+		})
 	}
 	// 启用数据库登陆
 
