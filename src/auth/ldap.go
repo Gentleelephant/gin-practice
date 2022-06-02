@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-type LdapPrivider struct {
+type LdapProvider struct {
 	Url                  string `yaml:"url"`
 	ReadTimeout          int    `yaml:"readTimeout"`
 	InsecureSkipVerify   bool   `yaml:"insecureSkipVerify"`
@@ -29,8 +29,8 @@ type LdapPrivider struct {
 	MailAttribute        string `yaml:"mailAttribute"`
 }
 
-func newProviderFromConf(c *config.LdapConf) *LdapPrivider {
-	return &LdapPrivider{
+func newProviderFromConf(c *config.LdapConf) *LdapProvider {
+	return &LdapProvider{
 		Url:                  c.Url,
 		ReadTimeout:          c.ReadTimeout,
 		InsecureSkipVerify:   c.InsecureSkipVerify,
@@ -49,11 +49,11 @@ func newProviderFromConf(c *config.LdapConf) *LdapPrivider {
 	}
 }
 
-func GetProvider() *LdapPrivider {
+func GetProvider() *LdapProvider {
 	return newProviderFromConf(config.GlobalConfig.LDAP)
 }
 
-func (l *LdapPrivider) newConn() (*ldap.Conn, error) {
+func (l *LdapProvider) newConn() (*ldap.Conn, error) {
 	if l.InsecureSkipVerify {
 		return ldap.DialURL(l.Url, ldap.DialWithTLSConfig(&tls.Config{InsecureSkipVerify: l.InsecureSkipVerify}))
 	}
@@ -80,7 +80,7 @@ func (l *LdapPrivider) newConn() (*ldap.Conn, error) {
 	return ldap.DialURL("tcp", ldap.DialWithTLSConfig(&tlsConfig))
 }
 
-func (l *LdapPrivider) Authentication(username, password string) (bool, string, error) {
+func (l *LdapProvider) Authentication(username, password string) (bool, string, error) {
 	conn, err := l.newConn()
 	if err != nil {
 		log.Println("Failed to connect to LDAP server", err)
