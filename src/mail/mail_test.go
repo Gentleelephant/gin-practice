@@ -18,6 +18,18 @@ func TestMail(t *testing.T) {
 	// 设置接收方邮箱
 	e.To = []string{"1132960613@qq.com"}
 
+	// 设置抄送
+	//e.Cc = []string{"XXX@qq.com",XXX@qq.com}
+	// 设置秘密抄送
+	//e.Bcc = []string{"XXX@qq.com"}
+
+	//设置文件发送的内容
+	//e.HTML = []byte(`
+	//<h1><a href="http://www.topgoer.com/">go语言中文网站</a></h1>
+	//`)
+	//这块是设置附件
+	//e.AttachFile("./test.txt")
+
 	// 设置主题
 	e.Subject = "这是主题"
 
