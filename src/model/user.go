@@ -22,6 +22,11 @@ type LoginUser struct {
 
 // UserVO TODO
 type UserVO struct {
+	Username string `json:"username"`
+
+	Email string `json:"email"`
+
+	Phone string `json:"phone"`
 }
 
 func UserDTOToUser(dto *UserDTO) *entity.User {
