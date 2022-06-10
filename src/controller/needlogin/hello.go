@@ -1,7 +1,7 @@
 package needlogin
 
 import (
-	"gin-practice/src/entity"
+	"gin-practice/src/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -19,7 +19,7 @@ import (
 // @Router /hello [get]
 func Hello(c *gin.Context) {
 
-	c.JSON(http.StatusOK, entity.CustomResp{
+	c.JSON(http.StatusOK, model.CustomResp{
 		Code: 2000,
 		Msg:  "hello world",
 		Data: "",

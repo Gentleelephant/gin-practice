@@ -1,4 +1,4 @@
-package entity
+package model
 
 // 统一响应
 

@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"gin-practice/src/entity"
+	"gin-practice/src/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -28,7 +28,7 @@ func CheckSessions(c *gin.Context) {
 	// 后面来认证
 	_, err := c.Cookie("token")
 	if err != nil {
-		c.JSON(http.StatusOK, entity.CustomResp{
+		c.JSON(http.StatusOK, model.CustomResp{
 			Code: 4000,
 			Msg:  "请先登录",
 			Data: err.Error(),
