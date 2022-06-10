@@ -48,9 +48,9 @@ func InitDB() *gorm.DB {
 	if err != nil {
 		log.Println("create table + "+"user"+"error:", err)
 	}
-	err = open.AutoMigrate(&entity.Policy{})
+	err = open.AutoMigrate(&entity.CasbinRule{})
 	if err != nil {
-		log.Println("create table + "+"policy"+"error:", err)
+		log.Println("create table + "+"casebin_rule"+"error:", err)
 	}
 	return open
 }

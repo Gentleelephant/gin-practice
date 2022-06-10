@@ -3,6 +3,8 @@ package rbac
 import (
 	"fmt"
 	"github.com/casbin/casbin/v2"
+	gormadapter "github.com/casbin/gorm-adapter/v3"
+	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"testing"
 )
@@ -26,10 +28,32 @@ func TestRBAC(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	check(e, "dajun", "data", "read")
-	check(e, "dajun", "data", "write")
-	check(e, "lizi", "data", "read")
-	check(e, "lizi", "data", "write")
-	check(e, "zhangpeng", "data", "delete")
+	check(e, "test", "data", "read")
 
+}
+
+//func check2(e *casbin.Enforcer, sub, obj, act string) {
+//	ok, _ := e.Enforce(sub, obj, act)
+//	if ok {
+//		fmt.Printf("%s CAN %s %s\n", sub, act, obj)
+//	} else {
+//		fmt.Printf("%s CANNOT %s %s\n", sub, act, obj)
+//	}
+//}
+//
+func TestRBAC2(t *testing.T) {
+	a, _ := gormadapter.NewAdapter("mysql", "root:root@tcp(127.0.0.1:3306)/gorm", true)
+	e, _ := casbin.NewEnforcer("model.conf", a)
+
+	err := e.LoadPolicy()
+	if err != nil {
+		return
+	}
+
+	// Check the permission.
+	//check(e, "dajun", "data1", "read")
+	//check(e, "lizi", "data2", "write")
+	//check(e, "dajun", "data1", "write")
+	//check(e, "dajun", "data2", "read")
+	check(e, "test", "/v1/test", "GET")
 }
