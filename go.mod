@@ -3,6 +3,7 @@ module gin-practice
 go 1.16
 
 require (
+	github.com/casbin/casbin/v2 v2.47.2
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-ldap/ldap/v3 v3.4.3
 	github.com/golang-jwt/jwt v3.2.2+incompatible
