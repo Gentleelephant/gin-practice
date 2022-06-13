@@ -2,6 +2,7 @@ package main
 
 import (
 	"gin-practice/src/auth/rbac"
+	"gin-practice/src/cache"
 	"gin-practice/src/config"
 	"gin-practice/src/dao"
 	"gin-practice/src/routers"
@@ -24,6 +25,9 @@ func main() {
 	if err != nil {
 		return
 	}
+
+	// 初始化redis
+	cache.InitRedis()
 
 	rbac.InitCasbin()
 

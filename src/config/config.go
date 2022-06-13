@@ -81,10 +81,17 @@ type MysqlConf struct {
 	Database string `yaml:"database"`
 }
 
+type RedisConfig struct {
+	RedisHost     string `yaml:"host"`
+	RedisPort     string `yaml:"port"`
+	RedisPassword string `yaml:"password"`
+}
+
 type Config struct {
-	Mysql  *MysqlConf `yaml:"mysql"`
-	Server *Server    `yaml:"server"`
-	LDAP   *LdapConf  `yaml:"ldap"`
+	Mysql  *MysqlConf   `yaml:"mysql"`
+	Server *Server      `yaml:"server"`
+	LDAP   *LdapConf    `yaml:"ldap"`
+	Redis  *RedisConfig `yaml:"redis"`
 }
 
 // LoadConfig load config
