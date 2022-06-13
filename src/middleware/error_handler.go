@@ -3,7 +3,6 @@ package middleware
 import (
 	"gin-practice/src/common"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 //TODO 错误处理中间件
@@ -24,8 +23,8 @@ func ErrorHandler() gin.HandlerFunc {
 		case *common.CommonError:
 			err = et
 		default:
-			err = common.ServerError
+			err = common.InternalServerError
 		}
-		c.AbortWithStatusJSON(http.StatusInternalServerError, err)
+		c.AbortWithStatusJSON(err.Code, err)
 	}
 }
