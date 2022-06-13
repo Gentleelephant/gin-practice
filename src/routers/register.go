@@ -22,6 +22,7 @@ func RegisterRouter(engine *gin.Engine) {
 	docs.SwaggerInfo.BasePath = "/v2"
 	v2 := engine.Group("/v2")
 	{
+		v2.GET("/method", nologin.Method)
 		v2.POST("/login", nologin.Login)
 		v2.GET("/hello", needlogin.Hello)
 		v2.POST("/register", nologin.Register)

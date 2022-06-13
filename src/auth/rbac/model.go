@@ -12,7 +12,7 @@ import (
 
 // 从文本中加载模型
 
-var Enforce *casbin.Enforcer
+var Enforcer *casbin.Enforcer
 
 func InitCasbin() {
 	// 从字符串初始化模型
@@ -46,6 +46,7 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 	dbname := mysql.Database
 
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, dbname)
+	fmt.Println(dataSourceName)
 	a, err := gormadapter.NewAdapter("mysql", dataSourceName, true)
 	if err != nil {
 		return
@@ -55,5 +56,5 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 	if err != nil {
 		return
 	}
-	Enforce = e
+	Enforcer = e
 }

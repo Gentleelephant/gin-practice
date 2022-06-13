@@ -19,7 +19,7 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
-	// 创建连接池，本来连接吃因嘎嘎i是个公用属性
+	// 创建连接池
 	pool, err := auth.NewPool(config.GlobalConfig.LDAP.NewLdapClient, 10)
 	if err != nil {
 		return

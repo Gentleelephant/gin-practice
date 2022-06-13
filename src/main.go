@@ -1,6 +1,7 @@
 package main
 
 import (
+	"gin-practice/src/auth/rbac"
 	"gin-practice/src/config"
 	"gin-practice/src/dao"
 	"gin-practice/src/routers"
@@ -23,6 +24,8 @@ func main() {
 	if err != nil {
 		return
 	}
+
+	rbac.InitCasbin()
 
 	config.DB = dao.InitDB()
 

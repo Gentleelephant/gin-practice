@@ -24,7 +24,13 @@ func CheckSessions(c *gin.Context) {
 		return
 	}
 
-	// 目前并不需要cookie来干什么
+	if strings.HasPrefix(c.Request.URL.Path, "/v2/method") && c.Request.Method == "GET" {
+		c.Next()
+		return
+	}
+
+	//
+
 	// 后面来认证
 	_, err := c.Cookie("token")
 	if err != nil {
