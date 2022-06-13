@@ -5,11 +5,37 @@ import (
 	"gin-practice/src/entity"
 )
 
-func AddUser(user *entity.User) error {
+// TODO
+func CreateUser(user *entity.User) error {
 	return config.DB.Create(user).Error
 }
 
-func CheckUser(user *entity.User) int64 {
+// TODO
+func UpdateUser(user *entity.User) error {
+	return nil
+}
+
+// TODO
+func DeleteUser(user *entity.User) error {
+	return nil
+}
+
+// TODO
+func GetUser(user *entity.User) error {
+	return nil
+}
+
+// TODO
+func CheckUserExist(username string) bool {
+	user := &entity.User{}
+	user.Username = username
+	if checkUser(user) == 0 {
+		return false
+	}
+	return true
+}
+
+func checkUser(user *entity.User) int64 {
 	first := config.DB.Where("username = ?", user.Username).First(user)
 	return first.RowsAffected
 }

@@ -1,6 +1,8 @@
 package rbac
 
 import (
+	"fmt"
+	"gin-practice/src/config"
 	"github.com/casbin/casbin/v2"
 	_ "github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
@@ -35,7 +37,16 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 		return
 	}
 
-	a, err := gormadapter.NewAdapter("mysql", "root:root@tcp(127.0.0.1:3306)/gorm", true)
+	mysql := config.GlobalConfig.Mysql
+
+	user := mysql.User
+	password := mysql.Password
+	host := mysql.Host
+	port := mysql.Port
+	dbname := mysql.Database
+
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, dbname)
+	a, err := gormadapter.NewAdapter("mysql", dataSourceName, true)
 	if err != nil {
 		return
 	}
