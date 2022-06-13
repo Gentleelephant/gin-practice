@@ -3,12 +3,6 @@ package user
 import "github.com/gin-gonic/gin"
 
 // TODO
-// CreateUser 创建用户
-func CreateUser(c *gin.Context) {
-
-}
-
-// TODO
 // UpdateUser 更新用户
 func UpdateUser(c *gin.Context) {
 

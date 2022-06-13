@@ -5,18 +5,18 @@ import (
 	"gin-practice/src/config"
 	"gin-practice/src/model"
 	"github.com/gin-gonic/gin"
-	"log"
 )
 
 func Login(c *gin.Context) {
+	var err error
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 	user := model.LoginUser{}
-	err := c.Bind(&user)
-	log.Println(user)
+	err = c.Bind(&user)
 	if err != nil {
-		c.JSON(200, gin.H{
-			"code":    4001,
-			"message": "参数错误",
-		})
 		return
 	}
 	// 创建连接池
@@ -27,12 +27,12 @@ func Login(c *gin.Context) {
 	// 判断是否启用LDAP登陆
 	if config.GlobalConfig.LDAP.Enabled {
 		checkUser := auth.CheckUser{
-			pool,
-			config.GlobalConfig.LDAP.ManagerDN,
-			config.GlobalConfig.LDAP.ManagerPassword,
-			config.GlobalConfig.LDAP.UserSearchBase,
-			config.GlobalConfig.LDAP.LoginAttribute,
-			config.GlobalConfig.LDAP.MailAttribute,
+			Pool:            pool,
+			ManagerDN:       config.GlobalConfig.LDAP.ManagerDN,
+			ManagerPassword: config.GlobalConfig.LDAP.ManagerPassword,
+			UserSearchBase:  config.GlobalConfig.LDAP.UserSearchBase,
+			LoginAttribute:  config.GlobalConfig.LDAP.LoginAttribute,
+			MailAttribute:   config.GlobalConfig.LDAP.MailAttribute,
 		}
 		authentication, err := checkUser.Authentication(user.Username, user.Password)
 		if err != nil {
@@ -44,6 +44,6 @@ func Login(c *gin.Context) {
 			"data":    authentication,
 		})
 	}
-	// 启用数据库登陆
+	//TODO 启用数据库登陆
 
 }
