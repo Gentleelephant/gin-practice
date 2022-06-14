@@ -11,19 +11,19 @@ type CommonError struct {
 }
 
 var (
-	InvalidParams = &CommonError{
+	InvalidParamsError = &CommonError{
 		Code:  400,
 		Msg:   "invalid params",
 		MsgCn: "参数错误",
 	}
 
-	Unauthorized = &CommonError{
+	UnauthorizedError = &CommonError{
 		Code:  401,
 		Msg:   "unauthorized",
 		MsgCn: "未授权",
 	}
 
-	Forbidden = &CommonError{
+	ForbiddenError = &CommonError{
 		Code:  403,
 		Msg:   "forbidden",
 		MsgCn: "禁止访问",
@@ -35,25 +35,25 @@ var (
 		MsgCn: "内部服务器错误",
 	}
 
-	UserNotFound = &CommonError{
+	UserNotFoundError = &CommonError{
 		Code:  404,
 		Msg:   "user not found",
 		MsgCn: "用户未找到",
 	}
 
-	UsernameAlreadyExist = &CommonError{
+	UsernameAlreadyExistError = &CommonError{
 		Code:  400,
 		Msg:   "username already exist",
 		MsgCn: "用户名已存在",
 	}
 
-	EmailAlreadyExist = &CommonError{
+	EmailAlreadyExistError = &CommonError{
 		Code:  400,
 		Msg:   "email already exist",
 		MsgCn: "邮箱已存在",
 	}
 
-	PasswordWrong = &CommonError{
+	PasswordWrongError = &CommonError{
 		Code:  400,
 		Msg:   "password wrong",
 		MsgCn: "密码错误",

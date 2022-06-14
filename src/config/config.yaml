@@ -10,7 +10,7 @@ server:
   port: 8080
 
 ldap:
-  enabled: true
+  enabled: false
   url: ldap://localhost:10389
   managerDN: uid=admin,ou=system
   managerPassword: secret

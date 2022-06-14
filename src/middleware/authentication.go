@@ -11,15 +11,15 @@ func RBAC(c *gin.Context) {
 	method := c.Request.Method
 	// 根据cookie的到用户
 	user, t := c.Get("user")
-	if t == true {
+	if t != true {
 		user = "default"
 	}
 	e := rbac.Enforcer
 
 	ok, err := e.Enforce(user.(string), path, method)
 	if err != nil {
-		return
 		c.Abort()
+		return
 	}
 	if !ok {
 		c.JSON(200, gin.H{

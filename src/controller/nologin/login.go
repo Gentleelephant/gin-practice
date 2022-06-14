@@ -2,9 +2,13 @@ package nologin
 
 import (
 	"gin-practice/src/auth"
+	"gin-practice/src/common"
 	"gin-practice/src/config"
+	"gin-practice/src/dao"
 	"gin-practice/src/model"
+	"gin-practice/src/utils"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func Login(c *gin.Context) {
@@ -14,6 +18,7 @@ func Login(c *gin.Context) {
 			_ = c.Error(err)
 		}
 	}()
+
 	user := model.LoginUser{}
 	err = c.Bind(&user)
 	if err != nil {
@@ -43,7 +48,26 @@ func Login(c *gin.Context) {
 			"message": "登陆成功",
 			"data":    authentication,
 		})
+		return
 	}
 	//TODO 启用数据库登陆
+	checkUser, err := dao.UserDao.GetUserByName(user.Username)
+	if err != nil {
+		return
+	}
+	checkPassword := checkUser.Password
+	if err != nil {
+		return
+	}
+	verify := utils.Verify(checkPassword, user.Password)
+	if !verify {
+		err = common.PasswordWrongError
+		return
+	}
 
+	// 登陆成功向cookie中写入sessionid，想redis中写入sessionid
+	c.JSON(http.StatusOK, gin.H{
+		"code":    2000,
+		"message": "登陆成功",
+	})
 }

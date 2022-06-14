@@ -1,9 +1,9 @@
 package nologin
 
 import (
-	"gin-practice/src/config"
-	"gin-practice/src/entity"
+	"gin-practice/src/dao"
 	"gin-practice/src/model"
+	"gin-practice/src/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -19,12 +19,16 @@ func Register(c *gin.Context) {
 	}()
 
 	dto := &model.UserDTO{}
-	err = c.BindJSON(dto)
+	err = c.ShouldBindJSON(dto)
 	if err != nil {
 		return
 	}
-	db := config.DB
-	err = db.Model(&entity.User{}).Create(model.UserDTOToUser(dto)).Error
+	encryption, err := utils.Encryption(dto.Password)
+	if err != nil {
+		return
+	}
+	dto.Password = encryption
+	err = dao.UserDao.CreateUser(model.UserDTOToUser(dto))
 	if err != nil {
 		return
 	}

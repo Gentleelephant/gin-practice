@@ -21,10 +21,10 @@ func main() {
 	// 注册路由
 	routers.RegisterRouter(engine)
 
-	err := config.LoadConfig(config.ConfigPath)
-	if err != nil {
-		return
-	}
+	//err := config.LoadConfig(config.ConfigPath)
+	//if err != nil {
+	//	return
+	//}
 
 	// 初始化redis
 	cache.InitRedis()
@@ -35,7 +35,7 @@ func main() {
 
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	err = engine.Run(config.GlobalConfig.Server.Host + ":" + config.GlobalConfig.Server.Port)
+	err := engine.Run(config.GlobalConfig.Server.Host + ":" + config.GlobalConfig.Server.Port)
 	if err != nil {
 		return
 	}

@@ -11,6 +11,10 @@ import (
 	"log"
 )
 
+func init() {
+	LoadConfig(ConfigPath)
+}
+
 var (
 	DB           = &gorm.DB{}
 	GlobalConfig = &Config{}
