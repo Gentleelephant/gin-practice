@@ -1,21 +1,11 @@
 package dao
 
 import (
+	"fmt"
 	"gin-practice/src/common"
-	"gin-practice/src/config"
 	"gin-practice/src/entity"
 	"gorm.io/gorm"
 )
-
-var (
-	UserDao *UserManager
-)
-
-func init() {
-	UserDao = &UserManager{
-		db: config.DB,
-	}
-}
 
 type UserManager struct {
 	db *gorm.DB
@@ -35,10 +25,29 @@ func (m *UserManager) CreateUser(user *entity.User) error {
 	if checkUser != 0 {
 		return common.UsernameAlreadyExistError
 	}
-	return config.DB.Create(user).Error
+	fmt.Println(m.db)
+	err := m.db.Transaction(func(tx *gorm.DB) error {
+		err := tx.Create(user).Error
+		if err != nil {
+			return err
+		}
+		err = tx.Create(&entity.CasbinRule{
+			PType: "g",
+			V0:    user.Username,
+			V1:    user.Role,
+		}).Error
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *UserManager) checkUser(user *entity.User) int64 {
-	first := config.DB.Where("username = ?", user.Username).First(user)
+	first := DB.Where("username = ?", user.Username).First(user)
 	return first.RowsAffected
 }

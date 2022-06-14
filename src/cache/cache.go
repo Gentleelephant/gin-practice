@@ -13,10 +13,6 @@ var (
 	Rdb *redis.Client
 )
 
-type RedisWrapper struct {
-	Client *redis.Client
-}
-
 func InitRedis() {
 	redisConfig := config.GlobalConfig.Redis
 	// 初始化redis
@@ -26,6 +22,10 @@ func InitRedis() {
 		DB:       0,                         // use default DB
 	})
 	Rdb = rdb
+}
+
+type RedisWrapper struct {
+	Client *redis.Client
 }
 
 func (w *RedisWrapper) SetSession(userId string, value string, expiration time.Duration) error {

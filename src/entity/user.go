@@ -3,13 +3,15 @@ package entity
 type User struct {
 	ID int `json:"id" gorm:"primary_key"`
 
-	Username string `json:"username" gorm:"uniqueIndex"`
+	Username string `json:"username" gorm:"uniqueIndex;type:varchar(16);not null"`
 
-	Password string `json:"password"`
+	Password string `json:"password" gorm:"type:varchar(255)"`
 
-	Email string `json:"email"`
+	Email string `json:"email" gorm:"type:varchar(128);not null"`
 
-	Phone string `json:"phone"`
+	Phone string `json:"phone" gorm:"type:varchar(16)"`
+
+	Role string `json:"role" gorm:"type:varchar(16);not null;default:'user'"`
 
 	CreatedAt int64 `json:"created_at"`
 

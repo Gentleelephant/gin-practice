@@ -6,17 +6,11 @@ import (
 	"encoding/base64"
 	"github.com/go-ldap/ldap/v3"
 	"gopkg.in/yaml.v3"
-	"gorm.io/gorm"
 	"io/ioutil"
 	"log"
 )
 
-func init() {
-	LoadConfig(ConfigPath)
-}
-
 var (
-	DB           = &gorm.DB{}
 	GlobalConfig = &Config{}
 	ConfigPath   = "C:\\work\\code\\goPro\\gin-practice\\src\\config\\config.yaml"
 )

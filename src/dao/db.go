@@ -11,15 +11,13 @@ import (
 	"time"
 )
 
-type MySQL struct {
-	Host     string `yaml:"host"`
-	Port     string `yaml:"port"`
-	User     string `yaml:"user"`
-	Password string `yaml:"password"`
-	Database string `yaml:"database"`
-}
+var (
+	DB        *gorm.DB
+	PolicyDao *CasbinRuleManager
+	UserDao   *UserManager
+)
 
-func InitDB() *gorm.DB {
+func InitDB() {
 
 	host := config.GlobalConfig.Mysql.Host
 	port := config.GlobalConfig.Mysql.Port
@@ -52,5 +50,25 @@ func InitDB() *gorm.DB {
 	if err != nil {
 		log.Println("create table + "+"casebin_rule"+"error:", err)
 	}
-	return open
+	DB = open
+
+	//
+	initAllManager()
+}
+
+func initAllManager() {
+	PolicyDao = &CasbinRuleManager{
+		db: DB,
+	}
+	UserDao = &UserManager{
+		db: DB,
+	}
+}
+
+type MySQL struct {
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	User     string `yaml:"user"`
+	Password string `yaml:"password"`
+	Database string `yaml:"database"`
 }
