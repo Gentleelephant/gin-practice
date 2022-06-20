@@ -3,7 +3,7 @@ package main
 import (
 	"gin-practice/src/auth/rbac"
 	"gin-practice/src/cache"
-	"gin-practice/src/config"
+	"gin-practice/src/global"
 	"gin-practice/src/initialize"
 	"gin-practice/src/routers"
 	"github.com/gin-gonic/gin"
@@ -21,7 +21,7 @@ func main() {
 	// 注册路由
 	routers.RegisterRouter(engine)
 
-	err := config.LoadConfig(config.ConfigPath)
+	err := initialize.LoadConfig()
 	if err != nil {
 		return
 	}
@@ -36,7 +36,7 @@ func main() {
 
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	err = engine.Run(config.GlobalConfig.Server.Host + ":" + config.GlobalConfig.Server.Port)
+	err = engine.Run(global.GlobalConfig.Server.Host + ":" + global.GlobalConfig.Server.Port)
 	if err != nil {
 		return
 	}

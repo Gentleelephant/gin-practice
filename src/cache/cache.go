@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gin-practice/src/common"
-	"gin-practice/src/config"
+	"gin-practice/src/global"
 	"github.com/go-redis/redis"
 	"time"
 )
@@ -15,7 +15,7 @@ var (
 )
 
 func InitRedis() {
-	redisConfig := config.GlobalConfig.Redis
+	redisConfig := global.GlobalConfig.Redis
 	// 初始化redis
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", redisConfig.RedisHost, redisConfig.RedisPort),

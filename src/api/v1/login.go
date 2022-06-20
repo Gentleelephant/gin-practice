@@ -4,7 +4,6 @@ import (
 	"gin-practice/src/auth"
 	"gin-practice/src/cache"
 	"gin-practice/src/common"
-	"gin-practice/src/config"
 	"gin-practice/src/global"
 	"gin-practice/src/model"
 	"gin-practice/src/utils"
@@ -27,19 +26,19 @@ func Login(c *gin.Context) {
 		return
 	}
 	// 创建连接池
-	pool, err := auth.NewPool(config.GlobalConfig.LDAP.NewLdapClient, 10)
+	pool, err := auth.NewPool(global.GlobalConfig.LDAP.NewLdapClient, 10)
 	if err != nil {
 		return
 	}
 	// 判断是否启用LDAP登陆
-	if config.GlobalConfig.LDAP.Enabled {
+	if global.GlobalConfig.LDAP.Enabled {
 		checkUser := auth.CheckUser{
 			Pool:            pool,
-			ManagerDN:       config.GlobalConfig.LDAP.ManagerDN,
-			ManagerPassword: config.GlobalConfig.LDAP.ManagerPassword,
-			UserSearchBase:  config.GlobalConfig.LDAP.UserSearchBase,
-			LoginAttribute:  config.GlobalConfig.LDAP.LoginAttribute,
-			MailAttribute:   config.GlobalConfig.LDAP.MailAttribute,
+			ManagerDN:       global.GlobalConfig.LDAP.ManagerDN,
+			ManagerPassword: global.GlobalConfig.LDAP.ManagerPassword,
+			UserSearchBase:  global.GlobalConfig.LDAP.UserSearchBase,
+			LoginAttribute:  global.GlobalConfig.LDAP.LoginAttribute,
+			MailAttribute:   global.GlobalConfig.LDAP.MailAttribute,
 		}
 		authentication, err := checkUser.Authentication(user.Username, user.Password)
 		if err != nil {

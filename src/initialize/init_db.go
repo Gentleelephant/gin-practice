@@ -1,7 +1,6 @@
 package initialize
 
 import (
-	"gin-practice/src/config"
 	"gin-practice/src/dao"
 	"gin-practice/src/entity"
 	"gin-practice/src/global"
@@ -15,11 +14,11 @@ import (
 
 func InitDB() {
 
-	host := config.GlobalConfig.Mysql.Host
-	port := config.GlobalConfig.Mysql.Port
-	user := config.GlobalConfig.Mysql.User
-	password := config.GlobalConfig.Mysql.Password
-	database := config.GlobalConfig.Mysql.Database
+	host := global.GlobalConfig.Mysql.Host
+	port := global.GlobalConfig.Mysql.Port
+	user := global.GlobalConfig.Mysql.User
+	password := global.GlobalConfig.Mysql.Password
+	database := global.GlobalConfig.Mysql.Database
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer（日志输出的目标，前缀和日志包含的内容——译者注）

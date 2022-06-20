@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"gin-practice/src/config"
+	"gin-practice/src/global"
 	"github.com/go-ldap/ldap/v3"
 	"io/ioutil"
 	"log"
@@ -50,7 +51,7 @@ func newProviderFromConf(c *config.LdapConf) *LdapProvider {
 }
 
 func GetProvider() *LdapProvider {
-	return newProviderFromConf(config.GlobalConfig.LDAP)
+	return newProviderFromConf(global.GlobalConfig.LDAP)
 }
 
 func (l *LdapProvider) newConn() (*ldap.Conn, error) {

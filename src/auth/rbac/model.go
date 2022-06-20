@@ -2,7 +2,7 @@ package rbac
 
 import (
 	"fmt"
-	"gin-practice/src/config"
+	"gin-practice/src/global"
 	"github.com/casbin/casbin/v2"
 	_ "github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
@@ -37,7 +37,7 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 		return
 	}
 
-	mysql := config.GlobalConfig.Mysql
+	mysql := global.GlobalConfig.Mysql
 
 	user := mysql.User
 	password := mysql.Password
