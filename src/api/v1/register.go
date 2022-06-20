@@ -1,4 +1,4 @@
-package nologin
+package v1
 
 import (
 	"gin-practice/src/dao"

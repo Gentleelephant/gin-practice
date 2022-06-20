@@ -3,6 +3,8 @@ package entity
 type User struct {
 	ID int `json:"id" gorm:"primary_key"`
 
+	UserId string `json:"user_id" gorm:"column:user_id"`
+
 	Username string `json:"username" gorm:"uniqueIndex;type:varchar(16);not null"`
 
 	Password string `json:"password" gorm:"type:varchar(255)"`

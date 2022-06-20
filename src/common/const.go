@@ -1,7 +1,7 @@
 package common
 
 const (
-	ACCOUNT   = ""
-	SESSION   = "session"
-	SEPARATOR = ":"
+	ACCOUNT_PREFIX = "usr-"
+	SESSION        = "session"
+	SEPARATOR      = ":"
 )

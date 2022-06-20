@@ -9,7 +9,7 @@ func RBAC(c *gin.Context) {
 
 	path := c.FullPath()
 	method := c.Request.Method
-	// 根据cookie的到用户
+	// 根据cookie得到用户信息
 	user, t := c.Get("user")
 	if t != true {
 		user = "default"

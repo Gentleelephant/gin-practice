@@ -1,9 +1,9 @@
 package dao
 
 import (
-	"fmt"
 	"gin-practice/src/common"
 	"gin-practice/src/entity"
+	"gin-practice/src/utils"
 	"gorm.io/gorm"
 )
 
@@ -25,8 +25,9 @@ func (m *UserManager) CreateUser(user *entity.User) error {
 	if checkUser != 0 {
 		return common.UsernameAlreadyExistError
 	}
-	fmt.Println(m.db)
-	err := m.db.Transaction(func(tx *gorm.DB) error {
+	randomString, err := utils.GenerateRandomString(5)
+	user.UserId = common.ACCOUNT_PREFIX + randomString
+	err = m.db.Transaction(func(tx *gorm.DB) error {
 		err := tx.Create(user).Error
 		if err != nil {
 			return err

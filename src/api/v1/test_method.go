@@ -1,4 +1,4 @@
-package nologin
+package v1
 
 import (
 	"gin-practice/src/auth/rbac"
@@ -8,7 +8,7 @@ import (
 func Method(c *gin.Context) {
 
 	e := rbac.Enforcer
-	ok, err := e.Enforce("test", "/v1/test", "GET")
+	ok, err := e.Enforce("test", "/v2/test", "GET")
 	if err != nil {
 		return
 	}

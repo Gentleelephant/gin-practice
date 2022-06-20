@@ -10,7 +10,8 @@ import (
 )
 
 var (
-	Rdb *redis.Client
+	Rdb         *redis.Client
+	RedisClient *RedisWrapper
 )
 
 func InitRedis() {
@@ -22,6 +23,10 @@ func InitRedis() {
 		DB:       0,                         // use default DB
 	})
 	Rdb = rdb
+	wrapper := RedisWrapper{
+		Client: rdb,
+	}
+	RedisClient = &wrapper
 }
 
 type RedisWrapper struct {

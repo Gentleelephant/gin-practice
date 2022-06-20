@@ -1,7 +1,8 @@
-package nologin
+package v1
 
 import (
 	"gin-practice/src/auth"
+	"gin-practice/src/cache"
 	"gin-practice/src/common"
 	"gin-practice/src/config"
 	"gin-practice/src/dao"
@@ -9,6 +10,7 @@ import (
 	"gin-practice/src/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time"
 )
 
 func Login(c *gin.Context) {
@@ -66,6 +68,18 @@ func Login(c *gin.Context) {
 	}
 
 	// 登陆成功向cookie中写入sessionid，想redis中写入sessionid
+	randomString, err := utils.GenerateRandomString(64)
+	if err != nil {
+		return
+	}
+	err = cache.RedisClient.SetSession(string(checkUser.ID), randomString, time.Second*360)
+	if err != nil {
+		return
+	}
+	err = cache.RedisClient.SetUserInfo(randomString, checkUser, time.Second*360)
+	if err != nil {
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"code":    2000,
 		"message": "登陆成功",

@@ -1,4 +1,4 @@
-package needlogin
+package v1
 
 import (
 	"gin-practice/src/model"
