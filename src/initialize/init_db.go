@@ -1,20 +1,16 @@
-package dao
+package initialize
 
 import (
 	"gin-practice/src/config"
+	"gin-practice/src/dao"
 	"gin-practice/src/entity"
+	"gin-practice/src/global"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
 	"os"
 	"time"
-)
-
-var (
-	DB        *gorm.DB
-	PolicyDao *CasbinRuleManager
-	UserDao   *UserManager
 )
 
 func InitDB() {
@@ -50,18 +46,18 @@ func InitDB() {
 	if err != nil {
 		log.Println("create table + "+"casebin_rule"+"error:", err)
 	}
-	DB = open
+	global.DB = open
 
 	//
 	initAllManager()
 }
 
 func initAllManager() {
-	PolicyDao = &CasbinRuleManager{
-		db: DB,
+	global.PolicyDao = &dao.CasbinRuleManager{
+		DB: global.DB,
 	}
-	UserDao = &UserManager{
-		db: DB,
+	global.UserDao = &dao.UserManager{
+		DB: global.DB,
 	}
 }
 

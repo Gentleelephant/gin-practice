@@ -5,7 +5,7 @@ import (
 	"gin-practice/src/cache"
 	"gin-practice/src/common"
 	"gin-practice/src/config"
-	"gin-practice/src/dao"
+	"gin-practice/src/global"
 	"gin-practice/src/model"
 	"gin-practice/src/utils"
 	"github.com/gin-gonic/gin"
@@ -21,7 +21,7 @@ func Login(c *gin.Context) {
 		}
 	}()
 
-	user := model.LoginUser{}
+	user := model.LoginUserDTO{}
 	err = c.Bind(&user)
 	if err != nil {
 		return
@@ -53,7 +53,7 @@ func Login(c *gin.Context) {
 		return
 	}
 	//TODO 启用数据库登陆
-	checkUser, err := dao.UserDao.GetUserByName(user.Username)
+	checkUser, err := global.UserDao.GetUserByName(user.Username)
 	if err != nil {
 		return
 	}

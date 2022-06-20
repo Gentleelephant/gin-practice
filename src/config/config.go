@@ -7,7 +7,7 @@ import (
 
 var (
 	GlobalConfig = &Config{}
-	ConfigPath   = "C:\\work\\code\\goPro\\gin-practice\\src\\config\\config.yaml"
+	ConfigPath   = "C:\\work\\code\\goPro\\gin-practice\\src\\config.yaml"
 )
 
 type Server struct {

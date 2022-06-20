@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"gin-practice/src/dao"
+	"gin-practice/src/global"
 	"gin-practice/src/model"
 	"gin-practice/src/utils"
 	"github.com/gin-gonic/gin"
@@ -18,7 +18,7 @@ func Register(c *gin.Context) {
 		}
 	}()
 
-	dto := &model.UserDTO{}
+	dto := &model.UserRegisterDTO{}
 	err = c.ShouldBindJSON(dto)
 	if err != nil {
 		return
@@ -28,7 +28,7 @@ func Register(c *gin.Context) {
 		return
 	}
 	dto.Password = encryption
-	err = dao.UserDao.CreateUser(model.UserDTOToUser(dto))
+	err = global.UserDao.CreateUser(model.UserRegisterDTOToUser(dto))
 	if err != nil {
 		return
 	}

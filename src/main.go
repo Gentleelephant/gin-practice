@@ -4,7 +4,7 @@ import (
 	"gin-practice/src/auth/rbac"
 	"gin-practice/src/cache"
 	"gin-practice/src/config"
-	"gin-practice/src/dao"
+	"gin-practice/src/initialize"
 	"gin-practice/src/routers"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -32,7 +32,7 @@ func main() {
 	rbac.InitCasbin()
 
 	// 初始化数据库
-	dao.InitDB()
+	initialize.InitDB()
 
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 

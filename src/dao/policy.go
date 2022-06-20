@@ -6,9 +6,9 @@ import (
 )
 
 type CasbinRuleManager struct {
-	db *gorm.DB
+	DB *gorm.DB
 }
 
 func (p *CasbinRuleManager) CreatePolicy(policy *entity.CasbinRule) error {
-	return p.db.Create(policy).Error
+	return p.DB.Create(policy).Error
 }
