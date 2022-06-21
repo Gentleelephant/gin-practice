@@ -11,15 +11,16 @@ import (
 func RegisterMiddlware(engine *gin.Engine) {
 
 	// 注册验证登录中间件
-	engine.Use(middleware.CheckSessions)
+	//engine.Use(middleware.CheckSessions)
+	engine.Use(middleware.JWTAuth())
 
 }
 
 // 注册路由
 func RegisterRouter(engine *gin.Engine) {
 
-	docs.SwaggerInfo.BasePath = "/v2"
-	v2 := engine.Group("/v2")
+	docs.SwaggerInfo.BasePath = "/v1"
+	v2 := engine.Group("/v1")
 	{
 		v2.GET("/method", v1.Method)
 		v2.POST("/login", v1.Login)

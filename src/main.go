@@ -2,7 +2,6 @@ package main
 
 import (
 	"gin-practice/src/auth/rbac"
-	"gin-practice/src/cache"
 	"gin-practice/src/global"
 	"gin-practice/src/initialize"
 	"gin-practice/src/routers"
@@ -26,7 +25,7 @@ func main() {
 		return
 	}
 	// 初始化redis
-	cache.InitRedis()
+	//cache.InitRedis()
 
 	// 初始化Casbin
 	rbac.InitCasbin()

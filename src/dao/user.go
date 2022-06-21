@@ -13,7 +13,10 @@ type UserManager struct {
 
 func (m *UserManager) GetUserByName(username string) (*entity.User, error) {
 	user := &entity.User{}
-	user.Username = username
+	take := m.DB.Take(user, "username = ?", username)
+	if take.Error != nil {
+		return nil, take.Error
+	}
 	return user, nil
 }
 

@@ -5,34 +5,41 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
+var (
+	TokenNotAvailable = "Token is invalid"
+	TokenExpired      = "Token is expired"
+	TokenInvalid      = "Token is not valid"
+)
+
 /**
 
 定义jwt编码和解码逻辑
 
 */
 
-// 定义一个jwt对象
+// JWT 定义一个jwt对象
 type JWT struct {
 	// 声明签名信息
 	SigningKey []byte
 }
 
-// 初始化jwt对象
+// NewJWT 初始化jwt对象
 func NewJWT() *JWT {
 	return &JWT{
-		[]byte("bgbiao.top"),
+		[]byte("a_secret_cret"),
 	}
 }
 
-// 自定义有效载荷(这里采用自定义的Name和Email作为有效载荷的一部分)
+// CustomClaims 自定义有效载荷(这里采用自定义的Name和Email作为有效载荷的一部分)
 type CustomClaims struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	UserId   string `json:"user_id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
 	// StandardClaims结构体实现了Claims接口(Valid()函数)
 	jwt.StandardClaims
 }
 
-// 调用jwt-go库生成token
+// CreateToken 调用jwt-go库生成token
 // 指定编码的算法为jwt.SigningMethodHS256
 func (j *JWT) CreateToken(claims CustomClaims) (string, error) {
 	// https://gowalker.org/github.com/dgrijalva/jwt-go#Token
@@ -41,7 +48,7 @@ func (j *JWT) CreateToken(claims CustomClaims) (string, error) {
 	return token.SignedString(j.SigningKey)
 }
 
-// token解码
+// ParserToken token解码
 func (j *JWT) ParserToken(tokenString string) (*CustomClaims, error) {
 	// https://gowalker.org/github.com/dgrijalva/jwt-go#ParseWithClaims
 	// 输入用户自定义的Claims结构体对象,token,以及自定义函数来解析token字符串为jwt的Token结构体指针
@@ -57,15 +64,15 @@ func (j *JWT) ParserToken(tokenString string) (*CustomClaims, error) {
 		if ve, ok := err.(*jwt.ValidationError); ok {
 			// ValidationErrorMalformed是一个uint常量，表示token不可用
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
-				return nil, fmt.Errorf("token不可用")
+				return nil, fmt.Errorf(TokenNotAvailable)
 				// ValidationErrorExpired表示Token过期
 			} else if ve.Errors&jwt.ValidationErrorExpired != 0 {
-				return nil, fmt.Errorf("token过期")
+				return nil, fmt.Errorf(TokenExpired)
 				// ValidationErrorNotValidYet表示无效token
 			} else if ve.Errors&jwt.ValidationErrorNotValidYet != 0 {
-				return nil, fmt.Errorf("无效的token")
+				return nil, fmt.Errorf(TokenInvalid)
 			} else {
-				return nil, fmt.Errorf("token不可用")
+				return nil, fmt.Errorf(TokenNotAvailable)
 			}
 
 		}

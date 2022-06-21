@@ -2,12 +2,13 @@ package v1
 
 import (
 	"gin-practice/src/auth"
-	"gin-practice/src/cache"
 	"gin-practice/src/common"
 	"gin-practice/src/global"
+	"gin-practice/src/jwt"
 	"gin-practice/src/model"
 	"gin-practice/src/utils"
 	"github.com/gin-gonic/gin"
+	ijwt "github.com/golang-jwt/jwt"
 	"net/http"
 	"time"
 )
@@ -21,7 +22,7 @@ func Login(c *gin.Context) {
 	}()
 
 	user := model.LoginUserDTO{}
-	err = c.Bind(&user)
+	err = c.ShouldBindJSON(&user)
 	if err != nil {
 		return
 	}
@@ -51,7 +52,7 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
-	//TODO 启用数据库登陆
+
 	checkUser, err := global.UserDao.GetUserByName(user.Username)
 	if err != nil {
 		return
@@ -67,18 +68,34 @@ func Login(c *gin.Context) {
 	}
 
 	// 登陆成功向cookie中写入sessionid，想redis中写入sessionid
-	randomString, err := utils.GenerateRandomString(64)
+	//randomString, err := utils.GenerateRandomString(64)
+	//if err != nil {
+	//	return
+	//}
+	//err = cache.RedisClient.SetSession(string(checkUser.ID), randomString, time.Second*360)
+	//if err != nil {
+	//	return
+	//}
+	//err = cache.RedisClient.SetUserInfo(randomString, checkUser, time.Second*360)
+	//if err != nil {
+	//	return
+	//}
+
+	claims := jwt.CustomClaims{
+		UserId:   checkUser.UserId,
+		Username: checkUser.Username,
+		Email:    checkUser.Email,
+		StandardClaims: ijwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
+			Issuer:    "gin-practice",
+		},
+	}
+	token, err := jwt.NewJWT().CreateToken(claims)
 	if err != nil {
 		return
 	}
-	err = cache.RedisClient.SetSession(string(checkUser.ID), randomString, time.Second*360)
-	if err != nil {
-		return
-	}
-	err = cache.RedisClient.SetUserInfo(randomString, checkUser, time.Second*360)
-	if err != nil {
-		return
-	}
+	c.Header("token", token)
+
 	c.JSON(http.StatusOK, gin.H{
 		"code":    2000,
 		"message": "登陆成功",
