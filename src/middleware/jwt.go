@@ -22,8 +22,13 @@ func JWTAuth() gin.HandlerFunc {
 			return
 		}
 
+		if c.Request.URL.Path == "/v1/captcha" && c.Request.Method == "GET" {
+			c.Next()
+			return
+		}
+
 		// 通过http header中的token解析来认证
-		token := c.Request.Header.Get("token")
+		token := c.Request.Header.Get("Token")
 		if token == "" || len(token) == 0 {
 			c.JSON(http.StatusOK, gin.H{
 				"status": -1,

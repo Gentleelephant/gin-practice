@@ -8,6 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"log"
+	"time"
 )
 
 func main() {
@@ -25,13 +27,28 @@ func main() {
 		return
 	}
 	// 初始化redis
-	//cache.InitRedis()
+	initialize.InitRedis()
+
+	initialize.InitEmailPool()
 
 	// 初始化Casbin
 	rbac.InitCasbin()
 
 	// 初始化数据库
 	initialize.InitDB()
+
+	go func() {
+		for {
+			select {
+			case mail := <-global.EmailLists:
+				// 发送邮件
+				global.Pool.Send(mail, time.Second*10)
+				log.Println("email:", mail)
+			default:
+			}
+		}
+
+	}()
 
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 

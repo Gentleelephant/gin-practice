@@ -2,32 +2,10 @@ package cache
 
 import (
 	"encoding/json"
-	"fmt"
 	"gin-practice/src/common"
-	"gin-practice/src/global"
 	"github.com/go-redis/redis"
 	"time"
 )
-
-var (
-	Rdb         *redis.Client
-	RedisClient *RedisWrapper
-)
-
-func InitRedis() {
-	redisConfig := global.GlobalConfig.Redis
-	// 初始化redis
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     fmt.Sprintf("%s:%s", redisConfig.RedisHost, redisConfig.RedisPort),
-		Password: redisConfig.RedisPassword, // no password set
-		DB:       0,                         // use default DB
-	})
-	Rdb = rdb
-	wrapper := RedisWrapper{
-		Client: rdb,
-	}
-	RedisClient = &wrapper
-}
 
 type RedisWrapper struct {
 	Client *redis.Client
@@ -52,5 +30,14 @@ func (w *RedisWrapper) SetUserInfo(sessionId string, value interface{}, expirati
 
 func (w *RedisWrapper) GetUserInfo(sessionId string) (interface{}, error) {
 	value := w.Client.Get(common.SESSION + common.SEPARATOR + sessionId)
+	return value.Result()
+}
+
+func (w *RedisWrapper) SetEMailCaptcha(email string, code string) error {
+	return w.Client.Set(common.EMAIL_CAPTCHA+common.SEPARATOR+email, code, time.Minute*5).Err()
+}
+
+func (w *RedisWrapper) GetEMailCaptcha(email string) (string, error) {
+	value := w.Client.Get(common.EMAIL_CAPTCHA + common.SEPARATOR + email)
 	return value.Result()
 }

@@ -9,6 +9,8 @@ type UserRegisterDTO struct {
 	Email string `json:"email" binding:"required"`
 
 	Phone string `json:"phone"`
+
+	Captcha string `json:"captcha"`
 }
 
 // LoginUserDTO 登录请求传输对象

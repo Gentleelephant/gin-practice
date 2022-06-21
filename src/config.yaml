@@ -23,3 +23,10 @@ redis:
     host: localhost
     port: 6379
     password: ""
+
+email:
+  address: smtp.qq.com:25
+  count: 5
+  username: 1665400978@qq.com
+  password: srwrbfpblphtbcac
+  host: smtp.qq.com

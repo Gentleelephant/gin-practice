@@ -23,6 +23,12 @@ func Register(c *gin.Context) {
 	if err != nil {
 		return
 	}
+
+	// 校验验证码，判断邮箱是否正确
+	err = global.RedisClient.SetEMailCaptcha(dto.Email, dto.Captcha)
+	if err != nil {
+		return
+	}
 	encryption, err := utils.Encryption(dto.Password)
 	if err != nil {
 		return

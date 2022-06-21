@@ -2,6 +2,7 @@ package jwt
 
 import (
 	"fmt"
+	"gin-practice/src/common"
 	"github.com/golang-jwt/jwt"
 )
 
@@ -83,6 +84,6 @@ func (j *JWT) ParserToken(tokenString string) (*CustomClaims, error) {
 		return claims, nil
 	}
 
-	return nil, fmt.Errorf("token无效")
+	return nil, common.InternalServerError
 
 }

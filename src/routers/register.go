@@ -20,12 +20,15 @@ func RegisterMiddlware(engine *gin.Engine) {
 func RegisterRouter(engine *gin.Engine) {
 
 	docs.SwaggerInfo.BasePath = "/v1"
-	v2 := engine.Group("/v1")
+	g1 := engine.Group("/v1")
 	{
-		v2.GET("/method", v1.Method)
-		v2.POST("/login", v1.Login)
-		v2.GET("/hello", v1.Hello)
-		v2.POST("/register", v1.Register)
+		g1.GET("/method", v1.Method)
+		g1.POST("/login", v1.Login)
+		g1.GET("/hello", v1.Hello)
+		g1.POST("/register", v1.Register)
+		g1.GET("/getUser", v1.GetUser)
+		g1.POST("/check_email", v1.EmailCaptcha)
+		g1.GET("/captcha", v1.GetImageCaptcha)
 	}
 
 }
