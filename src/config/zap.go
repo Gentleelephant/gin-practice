@@ -3,28 +3,83 @@ package config
 import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"sync"
+	"gopkg.in/natefinch/lumberjack.v2"
+	"os"
+	"time"
 )
 
-type Options struct {
-	LogFileDir    string //文件保存地方
-	AppName       string //日志文件前缀
-	ErrorFileName string
-	WarnFileName  string
-	InfoFileName  string
-	DebugFileName string
-	Level         zapcore.Level //日志等级
-	MaxSize       int           //日志文件小大（M）
-	MaxBackups    int           // 最多存在多少个切片文件
-	MaxAge        int           //保存的最大天数
-	Development   bool          //是否是开发模式
-	zap.Config
+const (
+	logTmFmt = "2006-01-02 15:04:05"
+)
+
+func GetLogger() {
+	Encoder := GetEncoder()
+	WriteSyncer := GetWriteSyncer()
+	LevelEnabler := GetLevelEnabler()
+	ConsoleEncoder := GetConsoleEncoder()
+	newCore := zapcore.NewTee(
+		zapcore.NewCore(Encoder, WriteSyncer, LevelEnabler),                          // 写入文件
+		zapcore.NewCore(ConsoleEncoder, zapcore.Lock(os.Stdout), zapcore.DebugLevel), // 写入控制台
+	)
+	logger := zap.New(newCore, zap.AddCaller())
+	zap.ReplaceGlobals(logger)
 }
 
-type Logger struct {
-	*zap.Logger
-	sync.RWMutex
-	Opts        *Options `json:"opts"`
-	zapConfig   zap.Config
-	initialized bool
+// 自定义Encoder
+func GetEncoder() zapcore.Encoder {
+	return zapcore.NewConsoleEncoder(
+		zapcore.EncoderConfig{
+			MessageKey:          "message",
+			LevelKey:            "level",
+			TimeKey:             "ts",
+			NameKey:             "logger",
+			CallerKey:           "caller_line",
+			FunctionKey:         zapcore.OmitKey,
+			StacktraceKey:       "",
+			SkipLineEnding:      false,
+			LineEnding:          " ",
+			EncodeLevel:         cEncodeLevel,
+			EncodeTime:          cEncodeTime,
+			EncodeDuration:      nil,
+			EncodeCaller:        cEncodeCaller,
+			EncodeName:          nil,
+			NewReflectedEncoder: nil,
+			ConsoleSeparator:    "",
+		})
+}
+
+// GetConsoleEncoder 输出日志到控制台
+func GetConsoleEncoder() zapcore.Encoder {
+	return zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
+}
+
+// GetWriteSyncer 自定义的WriteSyncer
+func GetWriteSyncer() zapcore.WriteSyncer {
+	lumberJackLogger := &lumberjack.Logger{
+		Filename:   "../log/zap.log",
+		MaxSize:    200,
+		MaxBackups: 10,
+		MaxAge:     30,
+	}
+	return zapcore.AddSync(lumberJackLogger)
+}
+
+// GetLevelEnabler 自定义的LevelEnabler
+func GetLevelEnabler() zapcore.Level {
+	return zapcore.InfoLevel
+}
+
+// cEncodeLevel 自定义日志级别显示
+func cEncodeLevel(level zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
+	enc.AppendString("[" + level.CapitalString() + "]")
+}
+
+// cEncodeTime 自定义时间格式显示
+func cEncodeTime(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+	enc.AppendString("[" + t.Format(logTmFmt) + "]")
+}
+
+// cEncodeCaller 自定义行号显示
+func cEncodeCaller(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
+	enc.AppendString("[" + caller.TrimmedPath() + "]")
 }

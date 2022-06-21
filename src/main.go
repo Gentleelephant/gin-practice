@@ -37,12 +37,14 @@ func main() {
 	// 初始化数据库
 	initialize.InitDB()
 
+	// 持续监听邮件列表
 	go func() {
 		for {
 			select {
 			case mail := <-global.EmailLists:
 				// 发送邮件
-				global.Pool.Send(mail, time.Second*10)
+				err = global.Pool.Send(mail, time.Second*10)
+				log.Println(err)
 				log.Println("email:", mail)
 			default:
 			}
