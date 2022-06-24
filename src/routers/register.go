@@ -29,6 +29,7 @@ func RegisterRouter(engine *gin.Engine) {
 		g1.GET("/getUser", v1.GetUser)
 		g1.POST("/check_email", v1.EmailCaptcha)
 		g1.GET("/captcha", v1.GetImageCaptcha)
+		g1.GET("/health_check", v1.HealthCheck)
 	}
 
 }

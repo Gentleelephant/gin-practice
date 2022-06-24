@@ -17,12 +17,22 @@ func JWTAuth() gin.HandlerFunc {
 			return
 		}
 
+		if c.Request.URL.Path == "/v1/hello" && c.Request.Method == "GET" {
+			c.Next()
+			return
+		}
+
 		if c.Request.URL.Path == "/v1/register" && c.Request.Method == "POST" {
 			c.Next()
 			return
 		}
 
 		if c.Request.URL.Path == "/v1/captcha" && c.Request.Method == "GET" {
+			c.Next()
+			return
+		}
+
+		if c.Request.URL.Path == "/v1/health_check" && c.Request.Method == "GET" {
 			c.Next()
 			return
 		}

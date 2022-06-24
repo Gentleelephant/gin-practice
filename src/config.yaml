@@ -30,3 +30,7 @@ email:
   username: 1665400978@qq.com
   password: srwrbfpblphtbcac
   host: smtp.qq.com
+
+consul:
+  host: 139.198.155.59
+  port: 8500

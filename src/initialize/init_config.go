@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"fmt"
 	"gin-practice/src/global"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
@@ -17,5 +18,6 @@ func LoadConfig() error {
 	if err != nil {
 		return err
 	}
+	fmt.Println(global.GlobalConfig)
 	return nil
 }

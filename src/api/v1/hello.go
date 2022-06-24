@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"gin-practice/src/model"
+	"gin-practice/src/global"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -19,10 +19,11 @@ import (
 // @Router /hello [get]
 func Hello(c *gin.Context) {
 
-	c.JSON(http.StatusOK, model.CustomResp{
-		Code: 2000,
-		Msg:  "hello world",
-		Data: "",
-	})
+	//c.JSON(http.StatusOK, model.CustomResp{
+	//	Code: 2000,
+	//	Msg:  "hello world",
+	//	Data: "",
+	//})
+	c.JSON(http.StatusOK, global.GlobalConfig)
 
 }
